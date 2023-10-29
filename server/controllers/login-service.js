@@ -1,32 +1,26 @@
-import { sendEmail } from "../middlewares/emailx.js";
-import { getEnv } from "../middlewares/get-env.js";
-import { rds } from "../middlewares/redisx.js";
-import { generateCode } from "../utils/generate-code.js";
-import { isEmail } from "../utils/is-email.js";
+import { rds } from "../middlewares/redisx";
+import { isEmail } from "../utils/is-email";
 
-export const errEmailIsFaild = new Error("Email is faild");
-export const errCodeIsSent = new Error("Code is sent! Don't send again!");
+export const errCodeValid = new Error("your code or email is valid");
+export const errFaildEmailFormat = new Error("your email is faild");
+export const errFaildCodeFormat = new Error("your code is faild");
 
-export async function loginService(email) {
-  if (!isEmail(email)) {
-    throw errEmailIsFaild;
+export async function loginService({ email, code } = {}) {
+  if (!email || !isEmail(email)) {
+    throw errFaildEmailFormat;
   }
+  if (!code || code.length !== 6) {
+    throw errFaildCodeFormat;
+  }
+
   const oldCode = await rds.get(email);
-  if (oldCode) {
-    throw errCodeIsSent;
-  }
-  const code = generateCode(6);
-  await rds.setEx(email, 60, code);
-  try {
-    await sendEmail({
-      from: `Register mini-chatgpt <${getEnv("EMAIL_USER")}>`,
-      to: email,
-      subject: "Register mini-chatgpt",
-      text: "Your code: " + code,
-    });
-  } catch (err) {
-    throw err;
+  if (code !== oldCode) {
+    throw errCodeValid;
   }
 
-  return { ok: 1 };
+  // if email no register
+
+  // is email is registed
+
+  return { ok: 1, token: "", email };
 }
