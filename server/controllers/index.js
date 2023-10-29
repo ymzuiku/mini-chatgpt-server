@@ -1,2 +1,2 @@
-import "./login.js";
 import "./ping.js";
+import "./send-code.js";
