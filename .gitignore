@@ -5,7 +5,7 @@
 **/tailwind.auto.css
 **/es
 **/ios
-
+dist
 **/react-app-env.d.ts
 **/app/uploads/*
 # dependencies

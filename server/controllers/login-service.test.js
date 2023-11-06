@@ -5,7 +5,8 @@ import {
   errFaildCodeFormat,
   errFaildEmailFormat,
   loginService,
-} from "./login-service.js";
+} from "./login-service";
+import { sendCodeService } from "./send-code-service";
 
 test("login fail params", async () => {
   {
@@ -39,6 +40,12 @@ test("login code faild", async () => {
 
 test("login success", async () => {
   const email = generateEmail();
+  {
+    const [res] = await Promise.allSettled([sendCodeService(email)]);
+    expect(res.status).toBe("fulfilled");
+    expect(res.reason).toBe(void 0);
+  }
+
   const [res] = await Promise.allSettled([
     loginService({ email, code: "999999" }),
   ]);
@@ -46,5 +53,42 @@ test("login success", async () => {
   expect(res.reason).toBe(void 0);
   expect(res.value.ok).toBe(1);
   expect(res.value.token.length > 15).toBe(true);
-  expect(res.value.email > 15).toBe(email);
+  expect(res.value.email).toBe(email);
+});
+
+test("login again success", async () => {
+  const email = generateEmail();
+  {
+    const [res] = await Promise.allSettled([sendCodeService(email)]);
+    expect(res.status).toBe("fulfilled");
+    expect(res.reason).toBe(void 0);
+  }
+
+  {
+    const [res] = await Promise.allSettled([
+      loginService({ email, code: "999999" }),
+    ]);
+    expect(res.status).toBe("fulfilled");
+    expect(res.reason).toBe(void 0);
+    expect(res.value.ok).toBe(1);
+    expect(res.value.token.length > 15).toBe(true);
+    expect(res.value.email).toBe(email);
+  }
+
+  {
+    const [res] = await Promise.allSettled([sendCodeService(email)]);
+    expect(res.status).toBe("fulfilled");
+    expect(res.reason).toBe(void 0);
+  }
+
+  {
+    const [res] = await Promise.allSettled([
+      loginService({ email, code: "999999" }),
+    ]);
+    expect(res.status).toBe("fulfilled");
+    expect(res.reason).toBe(void 0);
+    expect(res.value.ok).toBe(1);
+    expect(res.value.token.length > 15).toBe(true);
+    expect(res.value.email).toBe(email);
+  }
 });

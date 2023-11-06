@@ -9,3 +9,21 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+}
+
+model Chat {
+  id     Int     @id @default(autoincrement())
+  title  String?
+  userId Int
+}
+
+model Sentence {
+  id     Int     @id @default(autoincrement())
+  chatId Int
+  text   String?
+}

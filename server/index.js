@@ -1,6 +1,6 @@
 // express, ORM(Prisma+SQLite) //Mysql, PostgreSQL
-import { app } from "./app.js";
-import "./controllers/index.js";
+import { app } from "./app";
+import "./controllers/index";
 
 const port = 3001;
 

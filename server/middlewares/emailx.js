@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { getEnv } from "./get-env.js";
+import { getEnv } from "./get-env";
 
 export function sendEmail({ from, to, subject, text }) {
   if (getEnv("DEV") === "1") {

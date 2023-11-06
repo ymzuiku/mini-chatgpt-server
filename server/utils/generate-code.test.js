@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { generateCode } from "./generate-code.js";
+import { generateCode } from "./generate-code";
 
 test("generate-code", () => {
   expect(generateCode()).toBe("");

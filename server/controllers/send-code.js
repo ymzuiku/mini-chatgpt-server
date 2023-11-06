@@ -1,5 +1,5 @@
-import { app } from "../app.js";
-import { sendCodeService } from "./send-code-service.js";
+import { app } from "../app";
+import { sendCodeService } from "./send-code-service";
 
 app.post("/api/send-code", async (req, res) => {
   const email = req.body.email;

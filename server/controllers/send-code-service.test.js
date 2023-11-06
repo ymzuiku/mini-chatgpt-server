@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
-import { generateEmail } from "../utils/generate-email.js";
+import { generateEmail } from "../utils/generate-email";
 import {
   errCodeIsSent,
   errEmailIsFaild,
   sendCodeService,
-} from "./send-code-service.js";
+} from "./send-code-service";
 
 test("email faild", async () => {
   const [res] = await Promise.allSettled([sendCodeService("ym@xxx")]);
